@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Yohan Productions — editor de vídeo profissional para qualquer nicho ou estilo. Gaming, long-form, documentários e mais.">
+    <link rel="canonical" href="https://yohanprod.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/comissaoyohan.png.jpg" type="image/x-icon">
+    <title>Yohan Productions</title>
+
+    <meta property="og:title" content="Yohan Productions">
+    <meta property="og:description" content="Professional Video Editor | Any Niche / Style!">
+    <meta property="og:image" content="https://yohanprod.com/images/dcthumb.png">
+    <meta property="og:url" content="https://yohanprod.com">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#ed254e">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<!-- Filtros SVG usados nos efeitos de tinta / borrão -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+        <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="smear" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="9" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" result="d"/>
+            <feGaussianBlur in="d" stdDeviation="9 0.5"/>
+        </filter>
+        <filter id="splat" x="-10%" y="-400%" width="120%" height="900%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.018 0.09" numOctaves="3" seed="2" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </defs>
+</svg>
+
+<div class="fx-noise" aria-hidden="true"></div>
+<div class="fx-scan" aria-hidden="true"></div>
+<div class="fx-vignette" aria-hidden="true"></div>
+
+<div class="fx-bg" aria-hidden="true">
+    <!-- estilhaços cinza (fundo) -->
+    <i class="shard g1" data-speed="0.06"></i>
+    <i class="shard g2" data-speed="-0.05"></i>
+    <i class="shard g3" data-speed="0.09"></i>
+    <i class="shard g4" data-speed="-0.07"></i>
+    <i class="shard g5" data-speed="0.05"></i>
+    <!-- estilhaços vermelhos -->
+    <i class="shard r1" data-speed="0.14"></i>
+    <i class="shard r2" data-speed="-0.12"></i>
+    <i class="shard r3" data-speed="0.18"></i>
+    <i class="shard r4" data-speed="-0.10"></i>
+    <i class="shard r5" data-speed="0.12"></i>
+    <!-- meio-tom (pontinhos) -->
+    <i class="halftone h1" data-speed="0.10"></i>
+    <i class="halftone h2" data-speed="-0.08"></i>
+    <i class="halftone h3" data-speed="0.12"></i>
+    <!-- pinceladas de tinta -->
+    <i class="brush b1" data-speed="0.16"></i>
+    <i class="brush b2" data-speed="-0.14"></i>
+    <i class="brush b3" data-speed="0.10"></i>
+    <!-- retângulos de mangá (só contorno) -->
+    <i class="manga m1" data-speed="0.22"></i>
+    <i class="manga m2" data-speed="-0.18"></i>
+    <i class="manga m3" data-speed="0.20"></i>
+    <!-- brilhos de 4 pontas -->
+    <span class="sparkle k1" data-speed="0.26"><svg viewBox="0 0 100 100"><path d="M50 2 C52 30 60 44 98 50 C60 56 52 70 50 98 C48 70 40 56 2 50 C40 44 48 30 50 2Z"/></svg></span>
+    <span class="sparkle k2" data-speed="-0.20"><svg viewBox="0 0 100 100"><path d="M50 2 C52 30 60 44 98 50 C60 56 52 70 50 98 C48 70 40 56 2 50 C40 44 48 30 50 2Z"/></svg></span>
+    <span class="sparkle k3" data-speed="0.30"><svg viewBox="0 0 100 100"><path d="M50 2 C52 30 60 44 98 50 C60 56 52 70 50 98 C48 70 40 56 2 50 C40 44 48 30 50 2Z"/></svg></span>
+    <span class="sparkle k4" data-speed="-0.24"><svg viewBox="0 0 100 100"><path d="M50 2 C52 30 60 44 98 50 C60 56 52 70 50 98 C48 70 40 56 2 50 C40 44 48 30 50 2Z"/></svg></span>
+    <span class="sparkle k5" data-speed="0.18"><svg viewBox="0 0 100 100"><path d="M50 2 C52 30 60 44 98 50 C60 56 52 70 50 98 C48 70 40 56 2 50 C40 44 48 30 50 2Z"/></svg></span>
+</div>
+
+<div class="progress-bar"></div>
+
+<header id="header">
+    <div class="interface">
+        <div class="logo">
+            <a href="#home"><img src="images/COMISSAOYOHAN.png.jpg" alt="Yohan Productions - logo"></a>
+        </div>
+
+        <nav class="menu-desktop" aria-label="Navegação principal">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#experiences">My Experiences</a></li>
+                <li><a href="#about">Got interested?</a></li>
+            </ul>
+        </nav>
+
+        <div class="btn-contato">
+            <a href="#contato" class="btn-link">Contact Me</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="topo-do-site" id="home">
+
+        <video autoplay loop muted playsinline fetchpriority="high" class="bg-video-capa" aria-hidden="true">
+            Seu navegador não suporta a reprodução de vídeos.
+        </video>
+
+        <div class="capa-feather-overlay"></div>
+
+        <div class="fx-slash s1" aria-hidden="true"></div>
+        <div class="fx-slash s2" aria-hidden="true"></div>
+        <div class="fx-slash s3" aria-hidden="true"></div>
+
+        <div class="interface">
+            <div class="flex">
+                <div class="txt-topo-site">
+                    <h1 class="glitch" data-text="TRANSFORMING VIDEOS IN ART.">TRANSFORMING VIDEOS IN ART<span>.</span></h1>
+                    <p>Nice to meet you, I'm known as Yohan, but my real name is Charles. If you're here, I'll definitely be your new editor, right?</p>
+                </div>
+                <div class="img-topo-site">
+                    <img src="images/COMISSAOYOHAN.png.jpg" alt="Yohan (Charles), editor de vídeo" loading="eager">
+                </div>
+            </div>
+        </div>
+        <a href="#experiences" class="scroll-indicator" aria-label="Rolar para a próxima seção">
+            <i class="bi bi-chevron-double-down" aria-hidden="true"></i>
+        </a>
+    </section>
+
+    <section class="especialidades" id="experiences">
+        <div class="interface">
+            <h2 class="title">My <span>Experiences</span></h2>
+
+            <div class="filter-tabs" role="tablist" aria-label="Filtrar por categoria">
+                <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+                <button class="filter-tab" data-filter="gaming" role="tab" aria-selected="false">Gaming</button>
+                <button class="filter-tab" data-filter="compilations" role="tab" aria-selected="false">Compilations / Documentaries</button>
+                <button class="filter-tab" data-filter="shorts" role="tab" aria-selected="false">Shorts</button>
+            </div>
+
+            <div class="video-grid" id="videoGrid">
+
+                <div class="video-container" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="1" data-order-cat="8"
+                     data-video-id="KvhUJBrjqYE"
+                     aria-label="Reproduzir vídeo 1">
+                    <img src="https://img.youtube.com/vi/KvhUJBrjqYE/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/KvhUJBrjqYE/hqdefault.jpg';"
+                         alt="Prévia do vídeo 1" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container" role="button" tabindex="0"
+                     data-category="gaming" data-order-all="2" data-order-cat="2"
+                     data-video-id="lk8l7ue0PF8"
+                     aria-label="Reproduzir vídeo 2">
+                    <img src="https://img.youtube.com/vi/lk8l7ue0PF8/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/lk8l7ue0PF8/hqdefault.jpg';"
+                         alt="Prévia do vídeo 2" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="3" data-order-cat="2"
+                     data-video-id="L9pbV1mej_U"
+                     aria-label="Reproduzir vídeo 3">
+                    <img src="https://img.youtube.com/vi/L9pbV1mej_U/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/L9pbV1mej_U/hqdefault.jpg';"
+                         alt="Prévia do vídeo 3" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container" role="button" tabindex="0"
+                     data-category="gaming" data-order-all="4" data-order-cat="1"
+                     data-video-id="rfi2WirFdcg"
+                     aria-label="Reproduzir vídeo 4">
+                    <img src="https://img.youtube.com/vi/rfi2WirFdcg/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/rfi2WirFdcg/hqdefault.jpg';"
+                         alt="Prévia do vídeo 4" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="gaming" data-order-all="7" data-order-cat="4"
+                     data-video-id="eW_ML1k_b50"
+                     aria-label="Reproduzir vídeo 5">
+                    <img src="https://img.youtube.com/vi/eW_ML1k_b50/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/eW_ML1k_b50/hqdefault.jpg';"
+                         alt="Prévia do vídeo 5" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="6" data-order-cat="9"
+                     data-video-id="orakXg896LM"
+                     aria-label="Reproduzir vídeo 6">
+                    <img src="https://img.youtube.com/vi/orakXg896LM/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/orakXg896LM/hqdefault.jpg';"
+                         alt="Prévia do vídeo 6" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="gaming" data-order-all="8" data-order-cat="3"
+                     data-video-id="rvroN_EVPVw"
+                     aria-label="Reproduzir vídeo 7">
+                    <img src="https://img.youtube.com/vi/rvroN_EVPVw/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/rvroN_EVPVw/hqdefault.jpg';"
+                         alt="Prévia do vídeo 7" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container" role="button" tabindex="0"
+                     data-category="gaming" data-order-all="5" data-order-cat="5"
+                     data-video-id="embGySw7COY"
+                     aria-label="Reproduzir vídeo 8">
+                    <img src="https://img.youtube.com/vi/embGySw7COY/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/embGySw7COY/hqdefault.jpg';"
+                         alt="Prévia do vídeo 8" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="9" data-order-cat="1"
+                     data-video-id="dibRM5nfVRI"
+                     aria-label="Reproduzir vídeo 9">
+                    <img src="https://img.youtube.com/vi/dibRM5nfVRI/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/dibRM5nfVRI/hqdefault.jpg';"
+                         alt="Prévia do vídeo 9" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="10" data-order-cat="3"
+                     data-video-id="HUfHeISLYOs"
+                     aria-label="Reproduzir vídeo 10">
+                    <img src="https://img.youtube.com/vi/HUfHeISLYOs/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/HUfHeISLYOs/hqdefault.jpg';"
+                         alt="Prévia do vídeo 10" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="11" data-order-cat="4"
+                     data-video-id="a5310AASkmM"
+                     aria-label="Reproduzir vídeo 11">
+                    <img src="https://img.youtube.com/vi/a5310AASkmM/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/a5310AASkmM/hqdefault.jpg';"
+                         alt="Prévia do vídeo 11" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="12" data-order-cat="5"
+                     data-video-id="vgRYNqKzBXo"
+                     aria-label="Reproduzir vídeo 12">
+                    <img src="https://img.youtube.com/vi/vgRYNqKzBXo/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/vgRYNqKzBXo/hqdefault.jpg';"
+                         alt="Prévia do vídeo 12" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="13" data-order-cat="6"
+                     data-video-id="beg6cUiYWn4"
+                     aria-label="Reproduzir vídeo 13">
+                    <img src="https://img.youtube.com/vi/beg6cUiYWn4/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/beg6cUiYWn4/hqdefault.jpg';"
+                         alt="Prévia do vídeo 13" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container hidden-card" role="button" tabindex="0"
+                     data-category="compilations" data-order-all="14" data-order-cat="7"
+                     data-video-id="O9XcTkS1oiA"
+                     aria-label="Reproduzir vídeo 14">
+                    <img src="https://img.youtube.com/vi/O9XcTkS1oiA/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/O9XcTkS1oiA/hqdefault.jpg';"
+                         alt="Prévia do vídeo 14" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+
+                <div class="video-container vertical hidden-card" role="button" tabindex="0"
+                     data-category="shorts" data-order-all="999" data-order-cat="1"
+                     data-video-id="mmQBjrUc0dk" data-vertical="true"
+                     aria-label="Reproduzir short 1">
+                    <img src="https://img.youtube.com/vi/mmQBjrUc0dk/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/mmQBjrUc0dk/hqdefault.jpg';"
+                         alt="Prévia do short 1" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="video-container vertical hidden-card" role="button" tabindex="0"
+                     data-category="shorts" data-order-all="999" data-order-cat="2"
+                     data-video-id="twQkIVyHZBo" data-vertical="true"
+                     aria-label="Reproduzir short 2">
+                    <img src="https://img.youtube.com/vi/twQkIVyHZBo/maxresdefault.jpg"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/twQkIVyHZBo/hqdefault.jpg';"
+                         alt="Prévia do short 2" loading="lazy" decoding="async">
+                    <div class="play-overlay"><i class="bi bi-play-circle-fill" aria-hidden="true"></i></div>
+                </div>
+            </div>
+
+            <div class="view-all-wrap">
+                <button class="view-all-btn" id="viewAllBtn" type="button" aria-expanded="false">
+                    <span id="viewAllLabel">View all 14 videos</span>
+                    <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="sobre" id="about">
+        <div class="interface">
+            <div class="flex">
+                <div class="img-sobre"><img src="images/COMISSAOYOHAN.png.jpg" alt="Foto de Yohan" loading="lazy" decoding="async"></div>
+                <div class="txt-sobre">
+                    <h2>Got <span>interested?</span></h2>
+                    <p>Send me a message to talk better! I'm sure we'll build a great partnership and a future.</p>
+                    <p>Real commitment, if you ask, I will deliver.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="social-footer" id="contato">
+    <div class="interface">
+        <div class="flex-footer">
+            <div class="titulo-footer"><h3>Contact <span>me!</span></h3></div>
+            <div class="social-icons">
+                <a href="https://x.com/yohaN9x" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+                <a href="https://www.youtube.com/@yohaN9x" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="bi bi-youtube" aria-hidden="true"></i></a>
+                <a href="https://ytjobs.co/talent/profile/541123?r=320" target="_blank" rel="noopener noreferrer" title="YT Jobs" aria-label="YT Jobs"><i class="bi bi-briefcase-fill" aria-hidden="true"></i></a>
+                <a href="https://www.instagram.com/yohan9xz/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+                <a href="https://discord.com/users/yohan11_" target="_blank" rel="noopener noreferrer" title="Discord: yohan11_" aria-label="Discord: yohan11_"><i class="bi bi-discord" aria-hidden="true"></i></a>
+            </div>
+            <div class="txt-footer"><p>© 2026 Yohan Productions. All rights reserved.</p></div>
+        </div>
+    </div>
+</footer>
+
+<!-- Modal / Lightbox do vídeo -->
+<div class="video-modal" id="videoModal" aria-hidden="true">
+    <div class="video-modal-backdrop" data-modal-close></div>
+    <div class="video-modal-content" id="videoModalContent" role="dialog" aria-modal="true" aria-label="Player de vídeo">
+        <button class="video-modal-close" type="button" aria-label="Fechar vídeo" data-modal-close>
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+        <div class="video-modal-player" id="videoModalPlayer"></div>
+    </div>
+</div>
+
+<script>
+    // Abre o vídeo num modal maior (lightbox)
+    const videoModal = document.getElementById('videoModal');
+    const videoModalContent = document.getElementById('videoModalContent');
+    const videoModalPlayer = document.getElementById('videoModalPlayer');
+    let lastFocusedElement = null;
+
+    function openVideoModal(videoId, triggerEl, isVertical) {
+        lastFocusedElement = triggerEl;
+
+        // Shorts abrem num player vertical (9:16)
+        videoModalContent.classList.toggle('vertical', !!isVertical);
+
+        videoModalPlayer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+            title="Reprodutor de vídeo do YouTube"
+            allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+
+        videoModal.classList.add('open');
+        videoModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+
+        const closeBtn = videoModal.querySelector('.video-modal-close');
+        if (closeBtn) closeBtn.focus();
+    }
+
+    function closeVideoModal() {
+        videoModal.classList.remove('open');
+        videoModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        videoModalPlayer.innerHTML = ''; // para o vídeo ao fechar
+
+        if (lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    videoModal.querySelectorAll('[data-modal-close]').forEach(el => {
+        el.addEventListener('click', closeVideoModal);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && videoModal.classList.contains('open')) {
+            closeVideoModal();
+        }
+    });
+
+    document.querySelectorAll('.video-container[data-video-id]').forEach(container => {
+        const videoId = container.dataset.videoId;
+        const isVertical = container.dataset.vertical === 'true';
+
+        container.addEventListener('click', () => openVideoModal(videoId, container, isVertical));
+
+        container.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openVideoModal(videoId, container, isVertical);
+            }
+        });
+    });
+
+    // Abas de categoria + botão "View all videos"
+    const INITIAL_VISIBLE = 6;
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const videoCards = Array.from(document.querySelectorAll('#videoGrid .video-container'));
+    const viewAllBtn = document.getElementById('viewAllBtn');
+    const viewAllLabel = document.getElementById('viewAllLabel');
+    let currentFilter = 'all';
+    let expanded = false;
+
+    function renderVideos() {
+        // "All" usa a ordem de destaque; cada categoria usa a própria ordem
+        const key = currentFilter === 'all' ? 'orderAll' : 'orderCat';
+        document.getElementById('videoGrid').classList.toggle('shorts-mode', currentFilter === 'shorts');
+        const list = videoCards
+            .filter(card => currentFilter === 'all'
+                ? card.dataset.category !== 'shorts'
+                : card.dataset.category === currentFilter)
+            .sort((a, b) => Number(a.dataset[key]) - Number(b.dataset[key]));
+
+        videoCards.forEach(card => card.classList.add('hidden-card'));
+
+        list.forEach((card, i) => {
+            card.style.order = i;
+            card.classList.toggle('hidden-card', !expanded && i >= INITIAL_VISIBLE);
+        });
+
+        // O botão só aparece se a categoria tiver mais vídeos do que os 6 da frente
+        const total = list.length;
+        viewAllBtn.hidden = total <= INITIAL_VISIBLE;
+        viewAllLabel.textContent = expanded ? 'Show less' : `View all ${total} videos`;
+        viewAllBtn.setAttribute('aria-expanded', String(expanded));
+    }
+
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            currentFilter = tab.dataset.filter;
+            expanded = false;
+
+            filterTabs.forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+
+            // troca com fade: esconde, reorganiza sem ninguém ver, e mostra de novo
+            const grid = document.getElementById('videoGrid');
+            grid.classList.add('swapping');
+            setTimeout(() => {
+                renderVideos();
+                requestAnimationFrame(() => grid.classList.remove('swapping'));
+            }, 180);
+        });
+    });
+
+    viewAllBtn.addEventListener('click', () => {
+        // mantém o botão exatamente onde está na tela (a página não "pula")
+        const before = viewAllBtn.getBoundingClientRect().top;
+        expanded = !expanded;
+        renderVideos();
+        const after = viewAllBtn.getBoundingClientRect().top;
+        window.scrollBy({ top: after - before, left: 0, behavior: 'instant' });
+    });
+
+    renderVideos();
+
+    // Scroll suave para links internos (com compensação do header fixo)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                e.preventDefault();
+                const headerHeight = document.getElementById('header').offsetHeight;
+                window.scrollTo({
+                    top: targetElement.offsetTop - headerHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Header retrátil + barra de progresso de leitura
+    let lastScrollTop = 0;
+    const header = document.getElementById('header');
+    const progressBar = document.querySelector('.progress-bar');
+
+    window.addEventListener('scroll', function () {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            header.classList.add('hide');
+        } else {
+            header.classList.remove('hide');
+        }
+
+        header.classList.toggle('scrolled', scrollTop > 50);
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrolled + "%";
+    });
+
+    // Fade-in ao rolar
+    const fadeEls = document.querySelectorAll('.fade-in');
+    if (fadeEls.length) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('appear');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        fadeEls.forEach(el => observer.observe(el));
+    }
+
+    // Fundo grafite: parallax conforme a rolagem (cada peça com velocidade própria)
+    const jpSpans = document.querySelectorAll('.fx-bg > *');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let jpTicking = false;
+
+    function updateJp() {
+        const y = window.pageYOffset || document.documentElement.scrollTop;
+        jpSpans.forEach((el, i) => {
+            const speed = parseFloat(el.dataset.speed) || 0.2;
+            const sway = Math.sin(y / 500 + i) * 14;           // balanço lateral leve
+            el.style.translate = `${sway}px ${-y * speed}px`;  // sobe/desce em velocidades diferentes
+        });
+        jpTicking = false;
+    }
+
+    if (!reduceMotion && jpSpans.length) {
+        window.addEventListener('scroll', () => {
+            if (!jpTicking) {
+                jpTicking = true;
+                requestAnimationFrame(updateJp);
+            }
+        }, { passive: true });
+        updateJp();
+    }
+</script>
+</body>
+</html>
